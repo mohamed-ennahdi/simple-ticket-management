@@ -8,8 +8,8 @@ import com.github.mohamedennahdi.simpleticketmanagement.backend.entity.Ticket;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.exception.UserEmployeeNotFoundException;
 
 public interface TicketService {
-	List<Ticket> findAll();
-	List<Ticket> findByEmployee(Long employeeId) throws UserEmployeeNotFoundException;
+	List<TicketDto> findAll();
+	List<TicketDto> findByEmployee(Long employeeId) throws UserEmployeeNotFoundException;
 	Optional<Ticket> findById(Long id);
-	Optional<Ticket> create(TicketDto ticket);
+	TicketDto create(TicketDto ticket) throws UserEmployeeNotFoundException;
 }

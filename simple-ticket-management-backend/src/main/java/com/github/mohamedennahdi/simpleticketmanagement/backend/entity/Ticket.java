@@ -1,6 +1,7 @@
 package com.github.mohamedennahdi.simpleticketmanagement.backend.entity;
 
 import java.sql.Date;
+import java.util.Set;
 
 import com.github.mohamedennahdi.simpleticketmanagement.backend.enums.Category;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.enums.Priority;
@@ -8,11 +9,13 @@ import com.github.mohamedennahdi.simpleticketmanagement.backend.enums.Priority;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Data
@@ -28,6 +31,10 @@ public class Ticket {
 	@Enumerated(EnumType.STRING)
 	private Category category;
 	private Date creationDate;
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ticket_id")
+	private Set<TicketStatus> statuses;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_employee_id")

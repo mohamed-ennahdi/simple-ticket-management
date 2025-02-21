@@ -10,6 +10,7 @@ import com.github.mohamedennahdi.simpleticketmanagement.backend.dto.TicketDto;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.entity.Ticket;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.entity.UserEmployee;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.exception.UserEmployeeNotFoundException;
+import com.github.mohamedennahdi.simpleticketmanagement.backend.mapper.TicketMapper;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.repository.TicketRepository;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.repository.UserEmployeeRepository;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.service.TicketService;
@@ -25,11 +26,11 @@ public class TicketServiceImpl implements TicketService {
 	
 	TicketRepository ticketRepository;
 	UserEmployeeRepository userEmployeeRepository;
+	TicketMapper ticketMapper;
 
 	@Override
-	public List<Ticket> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TicketDto> findAll() {
+		return ticketMapper.entitiesToDtos(ticketRepository.findAll());
 	}
 
 	@Override
@@ -39,15 +40,21 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
-	public Optional<Ticket> create(TicketDto ticket) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+	public TicketDto create(TicketDto ticketDto) throws UserEmployeeNotFoundException {
+		UserEmployee userEmployee = userEmployeeRepository.findById(ticketDto.getUserEmployee().getId()).orElseThrow(() -> new UserEmployeeNotFoundException());
+		Ticket ticket = ticketMapper.dtoToEntity(ticketDto);
+		ticket.setUserEmployee(userEmployee);
+		
+		return ticketMapper.entityToDto(ticketRepository.save(ticket));
 	}
 
 	@Override
-	public List<Ticket> findByEmployee(Long employeeId) throws UserEmployeeNotFoundException {
+	public List<TicketDto> findByEmployee(Long employeeId) throws UserEmployeeNotFoundException {
 		UserEmployee employee = this.userEmployeeRepository.findById(employeeId).orElseThrow(() -> new UserEmployeeNotFoundException());
-		return this.ticketRepository.findByUserEmployee(employee);
+		
+		List<Ticket> t = this.ticketRepository.findByUserEmployee(employee);
+		
+		return ticketMapper.entitiesToDtos(t);
 	}
 
 

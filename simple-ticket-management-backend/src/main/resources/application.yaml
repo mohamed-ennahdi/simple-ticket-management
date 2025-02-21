@@ -8,3 +8,7 @@ spring:
     password: 1234
   jpa:
     database-platform: org.hibernate.community.dialect.Oracle12cDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
