@@ -12,5 +12,5 @@ spring:
     database-platform: org.hibernate.community.dialect.Oracle12cDialect
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true

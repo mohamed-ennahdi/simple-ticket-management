@@ -29,6 +29,7 @@ import java.util.Properties;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JTextPane;
+import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
 
@@ -37,7 +38,9 @@ public class Login extends JFrame {
 	Properties properties = new Properties();
 	
 	JTextPane textPaneLogin = new JTextPane();
-	JTextPane textPanePassword = new JTextPane();
+	private JPasswordField passwordField;
+	
+	private Welcome welcome;
 	
 	/**
 	 * Launch the application.
@@ -85,7 +88,7 @@ public class Login extends JFrame {
 				
 				if (!StringUtils.hasText(textPaneLogin.getText())
 					||
-					!StringUtils.hasText(textPanePassword.getText())) {
+					!StringUtils.hasText(String.valueOf(passwordField.getPassword()))) {
 					JOptionPane.showMessageDialog(null, "Login and Password are required");
 					return;
 				}
@@ -94,34 +97,28 @@ public class Login extends JFrame {
 				
 				Map<String, String> params = new HashMap<>();
 				params.put("login", textPaneLogin.getText());
-				params.put("password", textPanePassword.getText());
+				params.put("password", String.valueOf(passwordField.getPassword()));
 
 				
 				
 				RestTemplate restTemplate = new RestTemplate();
-				String fooResourceUrl = url + "/users/authenticate";
+				url = url + "/users/authenticate";
 				
-				UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(fooResourceUrl)
+				UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
 						// Add query parameter
 						.queryParam("login", textPaneLogin.getText())
-						.queryParam("password", textPanePassword.getText());
-//				ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class, vars);
+						.queryParam("password", String.valueOf(passwordField.getPassword()));
 				
 				HttpHeaders headers = new HttpHeaders();
 				headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 				HttpEntity<?> entity = new HttpEntity<>(headers);
 				try {
-					ResponseEntity<String> response = restTemplate.exchange(
-							builder.toUriString(),
-					        HttpMethod.GET,
-					        entity,
-					        String.class
-					);
+					ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity,String.class);
 					System.out.println(response);
+					
+					welcome.setVisible(true);
 				} catch (HttpClientErrorException ex) {
-//					ex.printStackTrace();
-					System.out.println(ex.getMessage());
-					JOptionPane.showMessageDialog(null, ex.getMessage());
+					JOptionPane.showMessageDialog(contentPane, ex.getMessage());
 				}
 				
 				
@@ -130,11 +127,17 @@ public class Login extends JFrame {
 		btnLogin.setBounds(151, 185, 104, 25);
 		contentPane.add(btnLogin);
 		
-		textPaneLogin.setBounds(174, 61, 127, 35);
+		textPaneLogin.setBounds(174, 61, 149, 25);
 		contentPane.add(textPaneLogin);
 		
-		textPanePassword.setBounds(174, 123, 127, 31);
-		contentPane.add(textPanePassword);
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		passwordField.setBounds(174, 127, 149, 25);
+		contentPane.add(passwordField);
+		
+		welcome = new Welcome();
+		
+		welcome.setVisible(false);
 		
 		try (InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties")) {
 		  properties.load(is);
@@ -144,5 +147,4 @@ public class Login extends JFrame {
 		}
 
 	}
-
 }
