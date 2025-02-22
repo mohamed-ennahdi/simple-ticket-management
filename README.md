@@ -46,3 +46,7 @@ grant create sequence to ticket_mngt_db;
 
 Connect to ticket_mngt_db user.
 
+## Observations
+
+As a Software Engineering Observation, H2 database was used for testing purposes, for simplicity reasons. It is not a recommended practice since the test database should be identical to main database.
+
