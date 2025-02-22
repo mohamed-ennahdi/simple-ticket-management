@@ -16,6 +16,8 @@
 
 ## database configuration
 
+The script is avalaible from [this location](./simple-ticket-management-database/script.sql).
+
 Create a Docker container to run an Oracle 12c instance:
 
 ```
