@@ -8,6 +8,5 @@ import lombok.Data;
 public class UserEmployeeDto {
 	private Long id;
 	private String login;
-	private String pwd;
 	private Role role;
 }

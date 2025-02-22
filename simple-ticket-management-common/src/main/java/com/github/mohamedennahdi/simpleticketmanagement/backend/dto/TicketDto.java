@@ -24,6 +24,8 @@ public class TicketDto implements Serializable {
 	private Category category;
 	private Date creationDate;
 	
+	private TicketStatusDto lastStatus;
+	
 	private Set<TicketStatusDto> statuses;
 	private UserEmployeeDto userEmployee;
 }

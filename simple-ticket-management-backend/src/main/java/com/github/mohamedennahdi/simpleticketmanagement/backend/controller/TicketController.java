@@ -20,12 +20,12 @@ import lombok.Data;
 @Data
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/tickets")
 public class TicketController {
 
 	TicketService ticketService;
 	
-	@GetMapping( value = "/tickets/{employeeId}" )
+	@GetMapping( value = "/{employeeId}" )
 	public ResponseEntity<List<TicketDto>> getTicketsByEmployee(@PathVariable Long employeeId) {
 		try {
 			List<TicketDto> dtos = ticketService.findByEmployee(employeeId);
@@ -35,13 +35,13 @@ public class TicketController {
 		}
 	}
 	
-	@GetMapping( value = "/tickets/" )
+	@GetMapping( value = "/" )
 	public ResponseEntity<List<TicketDto>> getAllTickets() {
 		List<TicketDto> dtos = ticketService.findAll();
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
 	
-	@PostMapping( value = "/tickets/" )
+	@PostMapping( value = "/" )
 	public ResponseEntity<TicketDto> createTicket(TicketDto ticketDto) {
 		try {
 			return new ResponseEntity<>(ticketService.create(ticketDto), HttpStatus.OK);

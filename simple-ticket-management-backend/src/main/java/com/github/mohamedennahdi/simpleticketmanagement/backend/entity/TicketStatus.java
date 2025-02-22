@@ -1,6 +1,6 @@
 package com.github.mohamedennahdi.simpleticketmanagement.backend.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import com.github.mohamedennahdi.simpleticketmanagement.backend.enums.Status;
 
@@ -20,12 +20,8 @@ public class TicketStatus {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ticket_id")
-//    private Ticket ticket;
-	
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
-	private Date assignmentDate;
+	private LocalDateTime assignmentDate;
 }
