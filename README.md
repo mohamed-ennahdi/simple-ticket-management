@@ -48,7 +48,11 @@ grant create sequence to ticket_mngt_db;
 
 Connect to ticket_mngt_db user.
 
+## Backend Configuration
+
+Before launching the backend module, make sure to execute mvn install against because MapStruct needs to generate mapper objects.
+
 ## Observations
 
-As a Software Engineering Observation, H2 database was used for testing purposes, for simplicity reasons. It is not a recommended practice since the test database should be identical to main database.
+As a software engineering observation, H2 database was used for testing purposes, for simplicity reasons. It is not a recommended practice since the test database should be identical to main database.
 
