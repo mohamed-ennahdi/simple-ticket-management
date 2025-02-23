@@ -7,8 +7,12 @@ import java.util.Set;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.enums.Category;
 import com.github.mohamedennahdi.simpleticketmanagement.backend.enums.Priority;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class TicketDto implements Serializable {
 	

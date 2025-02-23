@@ -44,6 +44,7 @@ public class TicketServiceImpl implements TicketService {
 		UserEmployee userEmployee = userEmployeeRepository.findById(ticketDto.getUserEmployee().getId()).orElseThrow(() -> new UserEmployeeNotFoundException());
 		Ticket ticket = ticketMapper.dtoToEntity(ticketDto);
 		ticket.setUserEmployee(userEmployee);
+		ticket.setId(null);
 		
 		return ticketMapper.entityToDto(ticketRepository.save(ticket));
 	}

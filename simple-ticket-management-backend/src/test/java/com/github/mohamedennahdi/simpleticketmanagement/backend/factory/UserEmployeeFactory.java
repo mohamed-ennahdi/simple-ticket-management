@@ -19,6 +19,6 @@ public class UserEmployeeFactory {
 		ue.setPwd(RandomString.make(16));
 		ue.setRole(Role.values()[r.nextInt(Role.values().length)]);
 		
-		return new UserEmployee();
+		return ue;
 	}
 }
