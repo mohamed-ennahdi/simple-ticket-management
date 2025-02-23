@@ -32,13 +32,12 @@ Once created, use an Oracle database client like SQL developer and connect with 
 Once connected, execute the following instructions:
 
 ```
-create user ticket_mngt_db identified by 1234  default tablespace ticket_mngt_tablespace  temporary tablespace ticket_mngt_tablespace_temp;
-
-grant create session to ticket_mngt_db;
 
 create tablespace ticket_mngt_tablespace datafile 'ticket_mngt_tablespace.data'  size 10M autoextend on;
 
-create temporary tablespace ticket_mngt_tablespace_temp tempfile 'ticket_mngt_tablespace_temp.data' size 5M autoextend on;
+create user ticket_mngt_db identified by 1234  default tablespace ticket_mngt_tablespace;
+
+grant create session to ticket_mngt_db;
 
 grant create session to ticket_mngt_db;
 grant create table to ticket_mngt_db;

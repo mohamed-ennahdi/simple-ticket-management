@@ -2,36 +2,33 @@ package com.github.mohamedennahdi.simpleticketmanagement.ui;
 
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
-import javax.swing.JTextPane;
-import javax.swing.JPasswordField;
 
-public class Login extends JFrame {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
+
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpClientErrorException;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.mohamedennahdi.simpleticketmanagement.backend.dto.UserEmployeeDto;
+import com.github.mohamedennahdi.simpleticketmanagement.ui.client.LocalHTTPClient;
+
+public class LoginView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -40,7 +37,9 @@ public class Login extends JFrame {
 	JTextPane textPaneLogin = new JTextPane();
 	private JPasswordField passwordField;
 	
-	private Welcome welcome;
+	private WelcomeView welcome;
+	
+	LocalHTTPClient httpClient = new LocalHTTPClient();
 	
 	/**
 	 * Launch the application.
@@ -49,7 +48,7 @@ public class Login extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login frame = new Login();
+					LoginView frame = new LoginView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +60,7 @@ public class Login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Login() {
+	public LoginView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -93,39 +92,26 @@ public class Login extends JFrame {
 					return;
 				}
 				
-				String url = properties.getProperty("simple.ticket.management.backend");
+				Map<String, String> requestParams = new HashMap<>();
+				requestParams.put("login", textPaneLogin.getText().trim());
+				requestParams.put("password", String.valueOf(passwordField.getPassword()).trim());
 				
-				Map<String, String> params = new HashMap<>();
-				params.put("login", textPaneLogin.getText());
-				params.put("password", String.valueOf(passwordField.getPassword()));
-
-				
-				
-				RestTemplate restTemplate = new RestTemplate();
-				url = url + "/users/authenticate";
-				
-				UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
-						// Add query parameter
-						.queryParam("login", textPaneLogin.getText())
-						.queryParam("password", String.valueOf(passwordField.getPassword()));
-				
-				HttpHeaders headers = new HttpHeaders();
-				headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-				HttpEntity<?> entity = new HttpEntity<>(headers);
 				try {
-					ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity,String.class);
-					System.out.println(response);
+					ResponseEntity<String> response = httpClient.invoke("/users/authenticate", HttpMethod.GET, requestParams, new HashMap<String, Object>());
 					
+					ObjectMapper objectMapper = new ObjectMapper();
+				    UserEmployeeDto dto = objectMapper.readValue(response.getBody(), UserEmployeeDto.class);
+				    welcome = new WelcomeView(dto);
 					welcome.setVisible(true);
-				} catch (HttpClientErrorException ex) {
+					setVisible(false);
+				} catch (HttpClientErrorException | JsonProcessingException ex) {
 					JOptionPane.showMessageDialog(contentPane, ex.getMessage());
 				}
-				
-				
 			}
 		});
 		btnLogin.setBounds(151, 185, 104, 25);
 		contentPane.add(btnLogin);
+		textPaneLogin.setText("user1");
 		
 		textPaneLogin.setBounds(174, 61, 149, 25);
 		contentPane.add(textPaneLogin);
@@ -135,16 +121,12 @@ public class Login extends JFrame {
 		passwordField.setBounds(174, 127, 149, 25);
 		contentPane.add(passwordField);
 		
-		welcome = new Welcome();
-		
-		welcome.setVisible(false);
-		
-		try (InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties")) {
-		  properties.load(is);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try (InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties")) {
+//		  properties.load(is);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 	}
 }
