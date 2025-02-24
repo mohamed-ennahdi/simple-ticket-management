@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: simple-ticket-management-backend
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: ticket_mngt_db
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.community.dialect.Oracle12cDialect
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
