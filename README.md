@@ -47,7 +47,7 @@ grant unlimited tablespace to ticket_mngt_db;
 grant create sequence to ticket_mngt_db;
 ```
 
-Connect to ticket_mngt_db user.
+Connect to database with user **ticket_mngt_db user** / **1234**.
 
 Execute the aforementioned SQL script.
 
@@ -65,9 +65,22 @@ One the container is started, access to application's [Swagger](http://localhost
 
 ### Frontend Configuration
 
-Download the executable from this [link](https://drive.google.com/file/d/1_40-MsxDWmRS_hNWJPW-QgBtM8ty-gbM/view?usp=drive_link).
+Download the executable from this [link](https://drive.google.com/file/d/165wlMdSuu2e3yTpgG5N2JuDD13S46LNW/view?usp=drive_link).
+
+Execute the following command:
+
+```
+java -jar simple-ticket-management-ui-0.0.2-SNAPSHOT-jar-with-dependencies.jar
+```
+
+Login/password available:
+ - user1 / pass1
+ - user2 / pass2
+ - user3 / pass3
 
 ## Remarks
 
 As a software engineering observation, H2 database was used for testing purposes, for simplicity reasons. It is not a recommended practice since the test database should be identical to main database.
+
+Docker images were uploaded to [docker hub](https://hub.docker.com/r/ennahdi/simple-ticket-management-backend/tags).
 
