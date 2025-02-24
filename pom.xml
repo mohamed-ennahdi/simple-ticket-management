@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.mohamedennahdi.simpleticketmanagement</groupId>
 	<artifactId>simple-ticket-management</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>simple-ticket-management</name>
 	<description>A simple ticket management application that allows employees to report and track IT issues</description>
 	<url/>

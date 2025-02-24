@@ -14,7 +14,9 @@
 
 ![image info](./img/simple_ticket_management_ERD.svg)
 
-## database configuration
+## Installation
+
+### database configuration
 
 The script is avalaible from [this location](./simple-ticket-management-database/script.sql).
 
@@ -47,11 +49,25 @@ grant create sequence to ticket_mngt_db;
 
 Connect to ticket_mngt_db user.
 
-## Backend Configuration
+Execute the aforementioned SQL script.
 
-Before launching the backend module, make sure to execute mvn install against because MapStruct needs to generate mapper objects.
+### Backend Configuration
 
-## Observations
+Make sure Oracle's docker container is running against port 1521.
+
+Execute the following docker command:
+
+```
+docker run -d --name simple-ticket-assessment-backend -p 9999:8080 ennahdi/simple-ticket-management-backend
+```
+
+One the container is started, access to application's [Swagger](http://localhost:9999/swagger-ui/index.html).
+
+### Frontend Configuration
+
+Download the executable from this [link](https://drive.google.com/file/d/1_40-MsxDWmRS_hNWJPW-QgBtM8ty-gbM/view?usp=drive_link).
+
+## Remarks
 
 As a software engineering observation, H2 database was used for testing purposes, for simplicity reasons. It is not a recommended practice since the test database should be identical to main database.
 

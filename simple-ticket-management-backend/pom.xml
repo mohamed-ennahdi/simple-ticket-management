@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.mohamedennahdi.simpleticketmanagement</groupId>
 		<artifactId>simple-ticket-management</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<properties>
 		<org.mapstruct.version>1.6.3</org.mapstruct.version>
@@ -86,6 +86,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.3.5</version>
+				<configuration>
+					<imageName>docker.io/ennahdi/${project.artifactId}:${project.version}</imageName>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
