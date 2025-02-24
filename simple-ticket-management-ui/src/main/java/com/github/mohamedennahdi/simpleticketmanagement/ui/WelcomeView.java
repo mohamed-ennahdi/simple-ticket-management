@@ -59,7 +59,6 @@ public class WelcomeView extends JFrame {
 	 * Create the frame.
 	 */
 	public WelcomeView() {
-		getContentPane().setLayout(null);
 	}
 	
 	UserEmployeeDto userEmployeeDto;
@@ -70,7 +69,7 @@ public class WelcomeView extends JFrame {
 		if (Role.EMPLOYEES.equals(userEmployeeDto.getRole())) {
 			Map<String, Object> pathVariables = new HashMap<>();
 			pathVariables.put("employeeId", userEmployeeDto.getId());
-			response = httpClient.invoke("/tickets/", HttpMethod.GET, new HashMap<String, String>(), pathVariables);
+			response = httpClient.invoke("/tickets/{employeeId}", HttpMethod.GET, new HashMap<String, String>(), pathVariables);
 		} else {
 			response = httpClient.invoke("/tickets/", HttpMethod.GET, new HashMap<String, String>(), new HashMap<String, Object>());
 		}
@@ -79,7 +78,6 @@ public class WelcomeView extends JFrame {
 		objectMapper.registerModule(new JavaTimeModule());
 		final List<TicketDto> dtos;
 		dtos = objectMapper.readValue(response.getBody(), new TypeReference<List<TicketDto>>(){});
-		
 	    
 	    String[] columnNames = { "Id", "Title", "Category", "Status", "Creation Date" };
 	    String[][] array = new String[dtos.size()][];
@@ -107,7 +105,7 @@ public class WelcomeView extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblUserName = new JLabel(userEmployeeDto.getLogin());
-		lblUserName.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblUserName.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblUserName.setBounds(66, 38, 121, 25);
 		contentPane.add(lblUserName);
 		
@@ -118,9 +116,8 @@ public class WelcomeView extends JFrame {
 		
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-//	            System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
 	            if (ticketView == null || !ticketView.isVisible()) {
-		            ticketView = new TicketView(dtos.get(table.getSelectedRow()));
+		            ticketView = new TicketView(lblUserName.getText(), dtos.get(table.getSelectedRow()));
 		            ticketView.setVisible(true);
 	            }
 	        }

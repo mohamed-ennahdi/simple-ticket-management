@@ -27,13 +27,13 @@ public class LocalHTTPClient {
 	}
 
 	public ResponseEntity<String> invoke(String endpoint, HttpMethod httpMethod, Map<String, String> requestParams,
-			Map<String, Object> pathVaribles) {
+			Map<String, Object> pathVariables) {
 		String url = properties.getProperty("simple.ticket.management.backend");
 
 		RestTemplate restTemplate = new RestTemplate();
 		url = url + endpoint;
 
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url).uriVariables(pathVariables);
 
 		for (Map.Entry<String, String> entry : requestParams.entrySet()) {
 			builder.queryParam(entry.getKey(), entry.getValue());
@@ -42,7 +42,7 @@ public class LocalHTTPClient {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 		HttpEntity<?> entity = new HttpEntity<>(headers);
-		ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), httpMethod, entity, String.class, pathVaribles);
+		ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), httpMethod, entity, String.class);
 
 		return response;
 	}
